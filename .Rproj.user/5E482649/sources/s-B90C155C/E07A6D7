@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1565097121044.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "E07A6D7",
+    "lastKnownWriteTime" : 1565093695,
+    "last_content_update" : 1565093695,
+    "path" : "~/Dropbox/proyectos y papers compartidos/Mzes_crowsourcedrep/replicationMzesOpenR/analysis/data_manipulations.R",
+    "project_path" : "analysis/data_manipulations.R",
+    "properties" : {
+        "cursorPosition" : "229,60",
+        "scrollLine" : "218"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
