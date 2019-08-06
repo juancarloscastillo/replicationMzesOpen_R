@@ -2,6 +2,7 @@
 
 ## Packages
 
+if (!require("pacman")) install.packages("pacman")
 pacman::p_load(haven, purrr, tibble, dplyr)
 
 ## Read the five individual-level datasets
