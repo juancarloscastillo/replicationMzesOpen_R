@@ -3,7 +3,7 @@
 ## Packages
 
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(haven, purrr, tibble, dplyr)
+pacman::p_load(haven, purrr, tibble, dplyr, readxl, countrycode, stringr)
 
 ## Read the five individual-level datasets
 
@@ -24,47 +24,47 @@ issp.labels <- lapply(issp, makeVlist) # list of variables in each df
 
 ## Find the six dependent variables
 ids <- lapply(issp.labels, function(x)
-                x[grep("resp.*numb|numb.*res", x$label,
-                        ignore.case = T),])
+        x[grep("resp.*numb|numb.*res", x$label,
+               ignore.case = T),])
 
 jobs <- lapply(issp.labels, function(x)
-                x[grep("resp.*job", x$label,
-                       ignore.case = T),])
+        x[grep("resp.*job", x$label,
+               ignore.case = T),])
 jobs.k <- tibble(data = names(jobs), # Key of same dv variable in each ISSP
-                job.vars = unlist(sapply(jobs, function(x) x[,"name"])),
-                id = unlist(sapply(ids, function(x) x[,"name"])))
-
-unemp <- lapply(issp.labels, function(x)
-                 x[grep("resp.*une", x$label,
-                 ignore.case = T),])
-unemp.k <- tibble(data = names(unemp),
-                 unemp.vars = unlist(sapply(unemp, function(x) x[,"name"])),
+                 job.vars = unlist(sapply(jobs, function(x) x[,"name"])),
                  id = unlist(sapply(ids, function(x) x[,"name"])))
 
-income <- lapply(issp.labels, function(x)
-                 x[grep("resp.*red.*inc", x$label,
-                 ignore.case = T),])
-income.k <- tibble(data = names(income),
-                  income.vars = unlist(sapply(income, function(x) x[,"name"])),
+unemp <- lapply(issp.labels, function(x)
+        x[grep("resp.*une", x$label,
+               ignore.case = T),])
+unemp.k <- tibble(data = names(unemp),
+                  unemp.vars = unlist(sapply(unemp, function(x) x[,"name"])),
                   id = unlist(sapply(ids, function(x) x[,"name"])))
 
-retirement <- lapply(issp.labels, function(x)
-                     x[grep("elde.*|resp.*old.*|18d.*old", x$label,
-                     ignore.case = T),])
-retirement.k <- tibble(data = names(retirement),
-                   retirement.vars = unlist(sapply(retirement, function(x) x[,"name"])),
+income <- lapply(issp.labels, function(x)
+        x[grep("resp.*red.*inc", x$label,
+               ignore.case = T),])
+income.k <- tibble(data = names(income),
+                   income.vars = unlist(sapply(income, function(x) x[,"name"])),
                    id = unlist(sapply(ids, function(x) x[,"name"])))
 
+retirement <- lapply(issp.labels, function(x)
+        x[grep("elde.*|resp.*old.*|18d.*old", x$label,
+               ignore.case = T),])
+retirement.k <- tibble(data = names(retirement),
+                       retirement.vars = unlist(sapply(retirement, function(x) x[,"name"])),
+                       id = unlist(sapply(ids, function(x) x[,"name"])))
+
 healthcare <- lapply(issp.labels, function(x)
-                     x[grep("resp.*health", x$label,
-                     ignore.case = T),])
+        x[grep("resp.*health", x$label,
+               ignore.case = T),])
 healthcare.k <- tibble(data = names(healthcare),
                        healthcare.vars = unlist(sapply(healthcare, function(x) x[,"name"])),
                        id = unlist(sapply(ids, function(x) x[,"name"])))
 
 housing <- lapply(issp.labels, function(x) ## Not asked in 1985
-                  x[grep("dece.*", x$label,
-                  ignore.case = T),])
+        x[grep("dece.*", x$label,
+               ignore.case = T),])
 housing.k <- tibble(data = names(housing)[names(housing) != "issp85"],
                     housing.vars = unlist(sapply(housing, function(x) x[,"name"])),
                     id = unlist(sapply(ids[-1], function(x) x[,"name"]))) # rm 85
@@ -90,13 +90,13 @@ jobs.dv <- merge.dv.vars(list = issp, key = jobs.k,
 unemp.dv <- merge.dv.vars(list = issp, key = unemp.k,
                           var.name = "unemp.vars", new.name = "unemployed")
 income.dv <- merge.dv.vars(list = issp, key = income.k,
-                          var.name = "income.vars", new.name = "income")
+                           var.name = "income.vars", new.name = "income")
 retirement.dv <- merge.dv.vars(list = issp, key = retirement.k,
-                           var.name = "retirement.vars", new.name = "retirement")
+                               var.name = "retirement.vars", new.name = "retirement")
 healthcare.dv <- merge.dv.vars(list = issp, key = healthcare.k,
                                var.name = "healthcare.vars", new.name = "healthcare")
 housing.dv <- merge.dv.vars(list = issp[-1], key = housing.k, # rm 85
-                               var.name = "housing.vars", new.name = "housing")
+                            var.name = "housing.vars", new.name = "housing")
 
 ## Create tibble with all the dv -housing
 dv.final <- bind_cols(jobs.dv[,c(3,1,2)],
@@ -106,9 +106,9 @@ dv.final <- bind_cols(jobs.dv[,c(3,1,2)],
 ### There are less unique ids than nrows in datasets, fast solution
 
 dv.final$id2 <- as.numeric(paste0(gsub("issp", "", dv.final$data),
-                       dv.final$id))
+                                  dv.final$id))
 housing.dv$id2 <- as.numeric(paste0(gsub("issp", "", housing.dv$data),
-                         housing.dv$id))
+                                    housing.dv$id))
 dv.final$housing <- ifelse(dv.final$id2 %in% housing.dv$id2,
                            housing.dv$housing, NA)
 
