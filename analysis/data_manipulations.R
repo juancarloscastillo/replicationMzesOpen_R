@@ -5,9 +5,7 @@
 if (!require("pacman")) install.packages("pacman")
 <<<<<<< HEAD
 pacman::p_load(haven, purrr, tibble, dplyr,readxl, countrycode, rvest, stringr)
-=======
-pacman::p_load(haven, purrr, tibble, dplyr, readxl, countrycode, stringr)
->>>>>>> 55f2ec9a7166e196a0386176a691375e955a487e
+
 
 ## Read the five individual-level datasets
 
