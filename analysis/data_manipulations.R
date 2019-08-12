@@ -3,7 +3,7 @@
 ## Packages
 
 if (!require("pacman")) install.packages("pacman")
-<<<<<<< HEAD
+
 pacman::p_load(haven, purrr, tibble, dplyr,readxl, countrycode, rvest, stringr)
 
 
@@ -281,3 +281,4 @@ issp.rep <- issp.rep %>%
 ## Save waves with independent variables at l1 (without education) and l2
 save(issp.rep,
      file = paste0(path, "/issp_l2.RData"))
+
